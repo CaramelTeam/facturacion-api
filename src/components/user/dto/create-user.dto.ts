@@ -1,5 +1,5 @@
-import { IsString } from "class-validator";
-import { IsEmail, MaxLength } from "class-validator/types/decorator/decorators";
+import { IsEmail, IsPhoneNumber, IsString, MaxLength } from "class-validator"
+
 
 
 export class CreateUserDto {
@@ -20,7 +20,7 @@ export class CreateUserDto {
     @MaxLength(5)
     prefixPhone: string;
 
-    @IsString()
+    @IsPhoneNumber('MX')
     @MaxLength(25)
     phone: string;
 
