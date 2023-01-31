@@ -1,7 +1,5 @@
 import { IsEmail, IsPhoneNumber, IsString, MaxLength } from "class-validator"
 
-
-
 export class CreateUserDto {
 
     @IsEmail()
@@ -17,11 +15,11 @@ export class CreateUserDto {
     lastname: string;
 
     @IsString()
-    @MaxLength(5)
+    @MaxLength(5, {message: 'El prefijo del número de teléfono no puede ser mayor a 5 caracteres'})
     prefixPhone: string;
 
     @IsPhoneNumber('MX')
-    @MaxLength(25)
+    @MaxLength(20, {message: 'El número de teléfono no puede ser mayor a 20 caracteres'})
     phone: string;
 
     

@@ -12,6 +12,7 @@ export class UserService {
 
   create(createUserDto: CreateUserDto) {
     createUserDto.password = encryptPass(createUserDto.password);
+    createUserDto.prefixPhone = `+${createUserDto.prefixPhone}`
     return this.userRepository.createUser(createUserDto);
   }
 

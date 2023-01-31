@@ -1,6 +1,6 @@
-import { connections } from "src/migrations/orm.config";
-import { DataSource, DataSourceOptions } from "typeorm";
-import { FACTU_CONNECTION, DATA_SOURCE } from "src/constants";
+import { connections } from '../../migrations/orm.config'
+import { DataSource, DataSourceOptions } from 'typeorm'
+import { FACTU_CONNECTION, FACTU_DATA_SOURCE } from '../../constants/index';
 
 export const databaseProviders = () => {
     return connections.map((connection) => ({
@@ -10,11 +10,11 @@ export const databaseProviders = () => {
 }
 
 export const factuDataSourceProvider = {
-    provide: DATA_SOURCE,
+    provide: FACTU_DATA_SOURCE,
     useFactory: (connection: DataSourceOptions) => {
-        const dataSource = new DataSource(connection);
+        const dataSource = new DataSource(connection)
         dataSource.initialize()
-        return dataSource;
+        return dataSource
     },
     inject: [`DATA_SOURCE_${FACTU_CONNECTION}`]
 }
