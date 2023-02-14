@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { encryptPass } from '../../helpers/bcrypt';
 import { UserRepository } from './repository/user.repository';
+import { UserE } from './entities/user.entity';
 @Injectable()
 export class UserService {
 
@@ -10,25 +11,31 @@ export class UserService {
     private readonly userRepository: UserRepository
   ) { }
 
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto): Promise<UserE> {
     createUserDto.password = encryptPass(createUserDto.password);
     createUserDto.prefixPhone = `+${createUserDto.prefixPhone}`
     return this.userRepository.createUser(createUserDto);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findAll(): Promise<UserE[]> {
+    return this.userRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: number): Promise<UserE> {
+    return this.userRepository.findById(id);
+  }
+
+  findByEmail(email: string): Promise<UserE> {
+    console.log('Email service', email);
+    
+    return this.userRepository.findByEmail(email);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userRepository.updateById(id, updateUserDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userRepository.deleteById(id);
   }
 }

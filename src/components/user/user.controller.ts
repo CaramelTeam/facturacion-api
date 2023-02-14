@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UsePipes} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,16 +14,22 @@ export class UserController {
 
   @Get()
   findAll() {
-    return 'This action returns all user';
-    // return this.userService.findAll();
+    return this.userService.findAll();
   }
 
+  @Get('email')
+  findByEmail( @Body('email') email: string ) {
+    return this.userService.findByEmail(email);
+  }
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
 
+
   @Patch(':id')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
