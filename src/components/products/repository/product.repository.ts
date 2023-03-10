@@ -1,9 +1,10 @@
-import { Injectable, Inject, HttpException } from '@nestjs/common';
+import { Injectable, Inject, HttpException, NotFoundException } from '@nestjs/common';
 import { FACTU_DATA_SOURCE } from '../../../constants/index';
-import { DataSource } from 'typeorm';
+import { DataSource, UpdateResult } from 'typeorm';
 import { ProductE } from '../entities/product.entity';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { ProductNotFoundException } from '../exceptions/notFound.exception';
+import { UpdateProductDto } from '../dto/update-product.dto';
 
 @Injectable()
 export class ProducRepository {
@@ -32,5 +33,20 @@ export class ProducRepository {
         return data;
     }
 
+    async updateById(id: number, updateproduct: UpdateProductDto): Promise<UpdateResult> {
+        const product = await this.productRepository.findOne({where: {id}});
+        if (!product) {
+            throw new NotFoundException('Product');
+        }
+        return await this.productRepository.update(id, updateproduct);
+    }
+
+    async deleteById(id: number): Promise<UpdateResult> {
+        const product = await this.productRepository.findOne({where: {id}});
+        if (!product) {
+            throw new NotFoundException('Product');
+        }
+        return await this.productRepository.softDelete(id);
+    }
 
 }

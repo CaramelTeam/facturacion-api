@@ -24,11 +24,12 @@ export class ProductsService {
     return this.productRepository.getById(id);
   }
 
+
   update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+    return this.productRepository.updateById(id,updateProductDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} product`;
+   return this.productRepository.deleteById(id);
   }
 }
