@@ -3,13 +3,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './components/user/user.module';
-import { DatabaseModule } from './config/database/database.module';
+import { AuthModule } from './components/auth/auth.module';
 
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

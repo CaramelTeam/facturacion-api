@@ -16,19 +16,19 @@ export class UserService {
     return this.userRepository.createUser(createUserDto);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findOne(id: number) {
+    return this.userRepository.findUserById(id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findByEmail(email: string) {
+    return this.userRepository.findUserByEmail(email);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userRepository.updateUser(id, updateUserDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userRepository.deleteUser(id);
   }
 }
