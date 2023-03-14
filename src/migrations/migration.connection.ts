@@ -5,7 +5,7 @@ const getDataSourceOptions = () => {
     const connectionName = process.env.APP_DB_CONNECTION;
     let options = connections.find((connection) => connection.name === connectionName);
     if (!options) {
-        return connections[0] as unknown as DataSourceOptions;
+        return connections[0] as unknown as DataSourceOptions
     }
     return options as unknown as DataSourceOptions;
 }

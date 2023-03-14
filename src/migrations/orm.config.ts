@@ -4,11 +4,7 @@ import 'dotenv/config'
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 // dotenv.config({ path: ENV_PATH });
 
-console.log(__dirname);
-
 const migrationsFilesPath: string = process.env.NODE_ENV === 'production' ? '/tables/**/*.js' : '/tables/**/*.ts';
-console.log('migra',migrationsFilesPath);
-
 const DEFAULT_DB_PORT = 3310
 const DEFAULT_DB_MIGRATIONS_TABLE = 'typeorm_migrations'
 const LOAD_ENTITIES_FROM = ['dist/**/*.entity.js']
