@@ -18,11 +18,17 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @Get('email')
+  findByEmail( @Body('email') email: string ) {
+    return this.userService.findByEmail(email);
+  }
+  
   @Get(':id')
   @UseInterceptors(ClassSerializerInterceptor)
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
+
 
   @Patch(':id')
   @UsePipes(new ValidationPipe({whitelist: true}))

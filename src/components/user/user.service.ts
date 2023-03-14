@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { encryptPass } from '../../helpers/bcrypt';
 import { UserRepository } from './repository/user.repository';
+import { UserE } from './entities/user.entity';
 @Injectable()
 export class UserService {
 
@@ -10,7 +11,7 @@ export class UserService {
     private readonly userRepository: UserRepository
   ) { }
 
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto): Promise<UserE> {
     createUserDto.password = encryptPass(createUserDto.password);
     createUserDto.prefixPhone = `+${createUserDto.prefixPhone}`
     return this.userRepository.createUser(createUserDto);
