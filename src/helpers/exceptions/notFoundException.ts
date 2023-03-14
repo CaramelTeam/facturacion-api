@@ -4,7 +4,7 @@ export class NotFoundException extends HttpException {
     constructor(
         message: string,
     ) {
-        super(`Message: ${message}`, HttpStatus.NOT_FOUND)
+        super(`${message}`, HttpStatus.NOT_FOUND)
     }
 
 }
