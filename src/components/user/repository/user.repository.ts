@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DataSource, UpdateResult } from 'typeorm';
+import { DataSource, FindOptionsSelect, UpdateResult } from 'typeorm';
 import { UserE } from '../entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { FACTU_DATA_SOURCE } from 'src/constants';
 import { RegisteredEmailException } from '../exceptions/registered.email.exception';
-import { NotFoundException } from '../../../helpers/exceptions/notFound.exception';
+import { NotFoundException } from '../../../helpers/exceptions/notFoundException';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 
@@ -16,7 +16,22 @@ export class UserRepository {
     ) { }
     private userRepository = this.dataSource.getRepository(UserE);
 
-    async createUser(createUser: CreateUserDto) {
+    private readonly select = (pag: boolean, one?: boolean): FindOptionsSelect<UserE> => {
+        return {
+            id: true,
+            name: pag,
+            lastname: pag,
+            password: pag,
+            email: pag,
+            phone: pag,
+            prefixPhone: pag,
+            createdAt: !!one,
+            updatedAt: !!one,
+            deletedAt: !!one,
+        }
+    }
+
+    async createUser(createUser: CreateUserDto): Promise<UserE> {
         const exist = await this.userRepository.findOne({ where: { email: createUser.email } })
         if (exist) {
             throw new RegisteredEmailException();
@@ -25,35 +40,53 @@ export class UserRepository {
         return await this.userRepository.save(newUser);
     }
 
-    async findAll():Promise<UserE[]> {
-        return await this.userRepository.find();
-    }
-    
-    async findById(id: number): Promise<UserE> {
-        return await this.userRepository.findOne({where: {id}});
-    }
-
-    async findByEmail(email: string): Promise<UserE> {
-        const data = await this.userRepository.findOne({where: {email}});
-        if (!data) {
-            throw new NotFoundException('User');
+    async findUserByEmail(email: string): Promise<UserE> {
+        const options: any = {
+            where: { email },
+            select: this.select(true)
+        }
+        const data = await this.userRepository.findOne(options);
+        if(!data) {
+            throw new NotFoundException('User not found');
         }
         return data;
     }
 
-    async updateById(id: number, updateUser: UpdateUserDto): Promise<UpdateResult> {
-        const user = await this.userRepository.findOne({where: {id}});
-        if (!user) {
-            throw new NotFoundException('User');
+    async findUserById(id: number): Promise<UserE> {
+        const options: any = {
+            where: { id },
+            select: this.select(true, true)
         }
-        return await this.userRepository.update(id, updateUser);
+        const data = await this.userRepository.findOne(options);
+        if(!data) {
+            throw new NotFoundException('User not found');
+        }
+        return data;
     }
 
-    async deleteById(id: number): Promise<UpdateResult> {
-        const user = await this.userRepository.findOne({where: {id}});
-        if (!user) {
-            throw new NotFoundException('User');
+    async updateUser(id:number, updateDto: UpdateUserDto ): Promise<UpdateResult>{
+        const options: any = {
+            where: { id }
+        }
+        const data = await this.userRepository.findOne(options);
+        if(!data) {
+            throw new NotFoundException('User not found');
+        }
+        return await this.userRepository.update(id, updateDto);
+        
+    }
+
+
+    async deleteUser(id: number): Promise<UpdateResult> {
+        const options: any = {
+            where: { id }
+        }
+        const data = await this.userRepository.findOne(options);
+        if(!data) {
+            throw new NotFoundException('User not found');
         }
         return await this.userRepository.softDelete(id);
     }
+
+
 }
