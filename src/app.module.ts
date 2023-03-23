@@ -6,6 +6,7 @@ import { UserModule } from './components/user/user.module';
 import { DatabaseModule } from './config/database/database.module';
 import { ProductsModule } from './components/products/products.module';
 import { AuthModule } from './components/auth/auth.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 
 @Module({
@@ -13,7 +14,12 @@ import { AuthModule } from './components/auth/auth.module';
     ConfigModule.forRoot(),
     UserModule,
     ProductsModule,
-    AuthModule
+    AuthModule,
+    MailerModule.forRootAsync({
+      useFactory: () => ({
+        
+      })
+    })
   ],
   controllers: [AppController],
   providers: [AppService],
