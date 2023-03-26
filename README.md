@@ -20,12 +20,46 @@
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
 
-# Paso N°1 - INSTALAR DEPENDENCIAS 
+
+# Docker
+## Levantar contenedor en modo desarrollo
+Para levantar el contenedor en modo desarrollo, debemos asegurarnos que nuestra variable de entorno `STAGE` sea igual a `dev` ejemplo `STAGE=dev`
+
+1-. Primero construimos la imagen el flag `-f` indica que utilizarmos el archivo de desarrollo
+```sh 
+docker compose -f .\docker-compose.dev.yml build
+```
+
+2-. Cuando la imagen termine de construirse, podemos levantar el contenedor con el siguiente comando
+
+*El flag `-d` indica que solo queremos que se levante el contenedor, no veremos los logs del contenedor*
+```sh
+docker compose -f .\docker-compose.dev.yml up -d 
+```
+
+## Levantar el contedor en modo produccion - QA 
+Para levantar el contenedor en modo desarrollo, debemos asegurarnos que nuestra variable de entorno `STAGE` sea igual a `prod` ejemplo `STAGE=prod`
+
+1-. Primero construimos la imagen el flag `-f` indica que utilizarmos el archivo de prod
+```sh 
+docker compose -f .\docker-compose.prod.yml build
+```
+
+2-. Cuando la imagen termine de construirse, podemos levantar el contenedor con el siguiente comando
+
+*El flag `-d` indica que solo queremos que se levante el contenedor, no veremos los logs del contenedor*
+```sh
+docker compose -f .\docker-compose.prod.yml up -d 
+```
+
+# Levantar el proyecto en LOCAL
+
+## Paso N°1 - INSTALAR DEPENDENCIAS 
 ```bash
 $ npm i
 ```
 
-# Comandos basicos
+## Comandos basicos
 
 #### levantar el servidor de desarrollo
 
