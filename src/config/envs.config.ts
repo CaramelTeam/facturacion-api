@@ -4,6 +4,7 @@ export default registerAs('env.config', () => {
     return {
         app: {
             PORT: process.env.PORT || 3000,
+            TEST_SECRET_KEY: process.env.TEST_SECRET_KEY
         },
         JWT: {
             JWT_SECRET: process.env.JWT_SECRET

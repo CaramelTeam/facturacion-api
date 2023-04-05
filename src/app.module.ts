@@ -9,10 +9,11 @@ import { AuthModule } from './components/auth/auth.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import envsConfig from './config/envs.config';
 import { join } from 'path';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { TestFuncsModule } from './components/test-funcs/test-funcs.module';
 import { EmailModule } from './helpers/email/email.module';
 
+import { InvoiceModule } from './components/invoice/invoice.module';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 
 @Module({
@@ -37,7 +38,8 @@ import { EmailModule } from './helpers/email/email.module';
       }
     }),
     TestFuncsModule,
-    EmailModule
+    EmailModule,
+    InvoiceModule
   ],
   controllers: [AppController],
   providers: [AppService],
