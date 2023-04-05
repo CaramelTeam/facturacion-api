@@ -1,14 +1,38 @@
 version: '3'
 
 services:
-  db:
-    image: mysql:8.0
-    restart: always
-    container_name: dev-mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-    ports:
-      - "3310:3306"
+
+  app: 
+    build: 
+      context: .
+      target: ${STAGE}
+      dockerfile: Dockerfile
+    
     volumes:
-      - ./data-dev:/var/lib/mysql
+      - .:/app #bind volume del proyecto
+      - /app/node_modules #volume anonimo de node_modules
+    
+    container_name: factu-app
+    image: jimloza/fact-api
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+
+    env_file:
+      - ./.env
+
+#   db:
+#     image: mysql:8.0
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+#       MYSQL_DATABASE: ${DB_NAME}
+#     container_name: ${DB_NAME}
+#     ports:
+#       - "3310:3306"
+#     volumes:
+#       # - ./data-dev:/var/lib/mysql #Persistiendo datos de la bd en un volumen del proyecto
+#       - mysql-db:/var/lib/mysql #Persistiendo datos de la bd en un volumen de docker
+
+# volumes:
+#   mysql-db:
+#     external: false
