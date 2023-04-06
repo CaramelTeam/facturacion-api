@@ -1,5 +1,13 @@
 export interface InvoiceI {
-    customerId: number;
+    customer: {
+        legal_name: string;
+        tax_id: string;
+        tax_system: string;
+        email?: string;
+        addres: {
+            zip: string;
+        }
+    }
     items: [{
         quantity: number;
         product: {
@@ -8,19 +16,19 @@ export interface InvoiceI {
             price: number;
         },
         discount?: number;
-        type: InvoiceType;
-        paymenth_method: PaymentMethod;
-        use: CFDI;
-        // currency?: string; //codigo de la moneda
-        conditions?: string;
-        date: Date;
-        series?: string;
-        pdf_custom_section?: string;
-        
-    }]
+    }],
+    type: InvoiceType;
+    paymenth_method: PaymentMethod;
+    use: CFDI;
+    // currency?: string; //codigo de la moneda
+    conditions?: string;
+    related_documents?: [{}]
+    date: Date;
+    series?: string;
+    pdf_custom_section?: string;
 }
 
-export enum  PaymentForm {
+export enum PaymentForm {
     EFECTIVO = '01',
     CHEQUE_NOMINATIVO = '02',
     TRANSFERENCIA = '03',
@@ -45,7 +53,7 @@ export enum  PaymentForm {
     POR_DEFINIR = '99'
 }
 
-export enum  PaymentMethod {
+export enum PaymentMethod {
     PAGO_EN_UNA_SOLA_EXHIBICION = 'PUE',
     PAGO_EN_PARCIALIDADES_O_DIFERIDO = 'PPD'
 }
