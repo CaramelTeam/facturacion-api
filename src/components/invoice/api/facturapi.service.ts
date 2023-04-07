@@ -9,24 +9,24 @@ import { DataSource } from 'typeorm';
 
 
 // @Injectable()
+const FACTURAPI_BASE_URL = envsConfig().app.FACTURAPI_URL;
 export class FacturapiService {
-    private readonly FACTURAPI_BASE_URL = envsConfig().app.FACTURAPI_URL;
     constructor(
         // @Inject(FACTU_DATA_SOURCE)
         // private readonly dataSource: DataSource
     ) { }
 
 
-    async createInvoice(invoice: InvoiceI) {
+    async createInvoice(invoice: any) {
         const data = await axios({
-            url: 'https://www.facturapi.io/v2/invoices',
+            url: `${FACTURAPI_BASE_URL}/invoices`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${envsConfig().app.TEST_SECRET_KEY}`
             },
             data: invoice
         })
-        return data;
+        return data.data;
     }
 
 } 

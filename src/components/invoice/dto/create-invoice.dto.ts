@@ -1,9 +1,16 @@
-import { IsDateString, IsEmail, IsJSON, IsNumber, IsOptional, IsString, MaxDate, MaxLength, length } from "class-validator";
-import { CancellationStatus, InvoiceType, PaymentForm } from "../types/invoice.types";
+import { IsDateString, IsEmail, IsJSON, IsNumber, IsObject, IsOptional, IsString, MaxDate, MaxLength, Validate, ValidateNested, length } from "class-validator";
+import { CancellationStatus, CustomerI, InvoiceType, PaymentForm } from "../types/invoice.types";
+import { ValidateCustomer } from "./ValidateCustomer";
 
 export class CreateInvoiceDto {
-    // @IsNumber()
-    // customerId: number;
+
+    @Validate(ValidateCustomer, {
+        message: 'Customer is not valid',
+    })
+    customer: CustomerI
+
+    @IsNumber()
+    customerId: number;
 
     // @IsString()
     // legal_name: string;

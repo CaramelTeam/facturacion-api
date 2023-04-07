@@ -16,31 +16,30 @@ export class InvoiceRepository {
 
     private readonly invoiceRepository = this.dataSource.getRepository(InvoiceE)
 
-    async store() {
-        const invoiceData: any = {
-            customer: {
-                legal_name: 'Dunder Mifflin',
-                email: 'email@example.com',
-                tax_id: 'ABC101010111',
-                tax_system: '601',
-                address: {
-                    zip: '85900'
-                }
-            },
-            items: [{
-                quantity: 2,
-                product: {
-                    description: 'Ukelele',
-                    product_key: '60131324',
-                    price: 345.60
-                }
-            }],
-            payment_form: PaymentForm.DINERO_ELECTRONICO,
-            folio_number: 914,
-            series: 'F'
-        }
-        const newInvoice = await this.facturapi.createInvoice(invoiceData)
-        return newInvoice;
+    async store(payload: CreateInvoiceDto) {
+        // const invoiceData: any = {
+        //     customer: {
+        //         legal_name: "Jim Antonio Loza Orozco",
+        //         email: "email@example.com",
+        //         tax_id: "LOOJ990525K25",
+        //         tax_system: "626",
+        //         address: {
+        //             zip: "45606"
+        //         }
+        //     },
+        //     items: [{
+        //         quantity: 36,
+        //         product: {
+        //             description: "Cinta",
+        //             product_key: "31201500",
+        //             price: 345.60
+        //         }
+        //     }],
+        //     payment_form: "03",
+        //     folio_number: 914,
+        //     series: "F"
+        // }
 
+        return await this.facturapi.createInvoice(payload)
     }
 }

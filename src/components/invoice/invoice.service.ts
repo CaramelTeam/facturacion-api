@@ -10,8 +10,8 @@ export class InvoiceService {
     private readonly invoiceRepository: InvoiceRepository
   ) { }
 
-  create() {
-    return this.invoiceRepository.store();
+  create(payload: CreateInvoiceDto) {
+    return this.invoiceRepository.store(payload);
   }
 
   findAll() {

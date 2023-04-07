@@ -28,6 +28,16 @@ export interface InvoiceI {
     pdf_custom_section?: string;
 }
 
+export interface CustomerI {
+    legal_name: string;
+    tax_id: string;
+    tax_system: string;
+    email?: string;
+    addres: {
+        zip: string;
+    }
+}
+
 export enum PaymentForm {
     EFECTIVO = '01',
     CHEQUE_NOMINATIVO = '02',
