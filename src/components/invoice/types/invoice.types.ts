@@ -92,3 +92,11 @@ export enum CFDI {
     PAGOS = 'CP01',
     NOMINA = 'CN01'
 }
+
+export enum CancellationStatus {
+    'NONE' = 'none',
+    'PENDING' = 'pending',
+    'ACCEPTED' = 'accepted',
+    'REJECTED' = 'rejected',
+    'EXPIRED' = 'expired'
+}

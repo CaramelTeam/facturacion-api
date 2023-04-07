@@ -1,28 +1,32 @@
-import Facturapi from 'facturapi';
+import { Inject, Injectable } from '@nestjs/common';
+import axios from 'axios';
+
 import envsConfig from 'src/config/envs.config';
-import { InvoiceI } from '../types/invoice.types';
+import { CFDI, InvoiceI, InvoiceType, PaymentForm, PaymentMethod } from '../types/invoice.types';
+import { FACTU_DATA_SOURCE } from 'src/constants';
+import { DataSource } from 'typeorm';
 
-const facturapi = new Facturapi(envsConfig().app.TEST_SECRET_KEY);
 
-export class FacturapiService { 
+
+// @Injectable()
+export class FacturapiService {
+    private readonly FACTURAPI_BASE_URL = envsConfig().app.FACTURAPI_URL;
+    constructor(
+        // @Inject(FACTU_DATA_SOURCE)
+        // private readonly dataSource: DataSource
+    ) { }
+
 
     async createInvoice(invoice: InvoiceI) {
-        await facturapi.invoices.create({
-            customer: {
-                ...invoice.customer                
+        const data = await axios({
+            url: 'https://www.facturapi.io/v2/invoices',
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${envsConfig().app.TEST_SECRET_KEY}`
             },
-            items:[
-                {
-                    ...invoice.items[0]
-                }
-            ],
-            type: invoice.type,
-            payment_method: invoice.paymenth_method,
-            use: invoice.use,
-            date: invoice.date,
-            series: invoice.series,
-            pdf_custom_section: invoice.pdf_custom_section
+            data: invoice
         })
+        return data;
     }
-    
+
 } 

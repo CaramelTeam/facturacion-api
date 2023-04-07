@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
+import { InvoiceRepository } from './repository/invoice.repository';
 
 @Injectable()
 export class InvoiceService {
-  create(createInvoiceDto: CreateInvoiceDto) {
-    return 'This action adds a new invoice';
+
+  constructor(
+    private readonly invoiceRepository: InvoiceRepository
+  ) { }
+
+  create() {
+    return this.invoiceRepository.store();
   }
 
   findAll() {

@@ -9,7 +9,7 @@ export class InvoiceController {
 
   @Post()
   create(@Body() createInvoiceDto: CreateInvoiceDto) {
-    return this.invoiceService.create(createInvoiceDto);
+    return this.invoiceService.create();
   }
 
   @Get()
