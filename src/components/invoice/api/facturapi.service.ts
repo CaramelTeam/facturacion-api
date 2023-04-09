@@ -1,10 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
 import axios from 'axios';
 
 import envsConfig from 'src/config/envs.config';
-import { CFDI, InvoiceI, InvoiceType, PaymentForm, PaymentMethod } from '../types/invoice.types';
-import { FACTU_DATA_SOURCE } from 'src/constants';
-import { DataSource } from 'typeorm';
+import { InvoiceI } from '../types/invoice.types';
+
 
 
 
@@ -17,7 +15,7 @@ export class FacturapiService {
     ) { }
 
 
-    async createInvoice(invoice: any) {
+    async createInvoice(invoice: InvoiceI) {
         const data = await axios({
             url: `${FACTURAPI_BASE_URL}/invoices`,
             method: 'POST',

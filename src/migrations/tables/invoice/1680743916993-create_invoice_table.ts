@@ -54,7 +54,7 @@ export class createInvoiceTable1680743916993 implements MigrationInterface {
                 },
                 {
                     name: 'total',
-                    type: 'double',
+                    type: 'double(10,2)',
                 },
                 {
                     name: 'fiscal_folio',
@@ -66,6 +66,7 @@ export class createInvoiceTable1680743916993 implements MigrationInterface {
                     name: 'series',
                     type: 'varchar',
                     length: '255',
+                    isNullable: true
                 },
                 {
                     name: 'payment_form',

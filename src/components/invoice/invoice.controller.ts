@@ -1,14 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
+import { JwtAuthGuard } from '../auth/guards';
 
+@UseGuards(JwtAuthGuard)
 @Controller('invoice')
 export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) {}
 
   @Post()
   create(@Body(new ValidationPipe({whitelist: true })) createInvoiceDto: CreateInvoiceDto) {
+    // console.log(createInvoiceDto);
     return this.invoiceService.create(createInvoiceDto);
   }
 

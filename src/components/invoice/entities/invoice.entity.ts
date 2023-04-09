@@ -22,13 +22,14 @@ export class InvoiceE {
     @Column({default: 'now()'})
     expidition_date: Date;
 
-    @Column({nullable: true})
+    @Column({nullable: true, default: null})
     cancellation_receipt: string;
 
     @Column()
     type: InvoiceType;
 
-    @Column()
+    // @Column({type: 'double', precision: 10, scale: 2})
+    @Column({type: 'double'})
     total: number;
 
     @Column()
@@ -46,8 +47,8 @@ export class InvoiceE {
     @Column({nullable: true})
     related_documents: string;
 
-    @Column({type: 'varchar', length: '255', nullable: true})
-    stamp: string;  
+    @Column({type: 'json'})
+    stamp: object;  
 
     @CreateDateColumn()
     createdAt: Date;

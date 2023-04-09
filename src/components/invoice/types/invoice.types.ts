@@ -1,31 +1,15 @@
 export interface InvoiceI {
-    customer: {
-        legal_name: string;
-        tax_id: string;
-        tax_system: string;
-        email?: string;
-        addres: {
-            zip: string;
-        }
-    }
-    items: [{
-        quantity: number;
-        product: {
-            description: string;
-            product_key: string;
-            price: number;
-        },
-        discount?: number;
-    }],
-    type: InvoiceType;
-    paymenth_method: PaymentMethod;
+    customer: CustomerI;
+    items: ItemI[];
     use: CFDI;
-    // currency?: string; //codigo de la moneda
+    type: InvoiceType;
+    payment_form: PaymentForm;
+    payment_method: PaymentMethod;
     conditions?: string;
-    related_documents?: [{}]
-    date: Date;
     series?: string;
+    // related_documents?: 
     pdf_custom_section?: string;
+    // currency?: string; //codigo de la moneda
 }
 
 export interface CustomerI {
@@ -33,10 +17,28 @@ export interface CustomerI {
     tax_id: string;
     tax_system: string;
     email?: string;
-    addres: {
+    address: {
         zip: string;
     }
 }
+
+export interface ItemI {
+    quantity: number,
+    discount?: number,
+    product: {
+        description: string,
+        product_key: string,
+        price: number,
+        unit_key: string,
+        taxes?: TaxesI[]
+    }
+}
+
+export interface TaxesI {
+    rate: number,
+    type: TaxesTypes,
+    factor: TaxesFactor
+} 
 
 export enum PaymentForm {
     EFECTIVO = '01',
@@ -109,4 +111,16 @@ export enum CancellationStatus {
     'ACCEPTED' = 'accepted',
     'REJECTED' = 'rejected',
     'EXPIRED' = 'expired'
+}
+
+export enum TaxesTypes {
+    IVA = 'IVA',
+    IEPS = 'IEPS',
+    ISR = 'ISR'
+}
+
+export enum TaxesFactor {
+    TASA = 'Tasa',
+    CUOTA = 'Cuota',
+    EXENTO = 'Exento'
 }
