@@ -124,3 +124,21 @@ export enum TaxesFactor {
     CUOTA = 'Cuota',
     EXENTO = 'Exento'
 }
+
+
+export enum CancellationMotives {
+    ERRORES_CON_RELAION= '01',
+    ERRORES_SIN_RELACION = '02',
+    NO_SE_LLEVO_ACABO_LA_OPERACION = '03',
+    OPERACION_NOMINATIVA_FACTURA_GLOBAL = '05'
+}
+
+export interface CancelParamOptions {
+    motive: CancellationMotives,
+    substitution?: string 
+} 
+
+export enum PaymentStatus {
+    PENDING = 'pending',
+    PAID = 'paid'
+}

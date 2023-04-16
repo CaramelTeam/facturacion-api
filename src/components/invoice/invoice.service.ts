@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InvoiceRepository } from './repository/invoice.repository';
+import { CancelParamOptions, CancellationMotives } from './types/invoice.types';
+import { PaginationI } from 'src/helpers/interfaces/pagination.interface';
 
 @Injectable()
 export class InvoiceService {
@@ -14,12 +16,16 @@ export class InvoiceService {
     return this.invoiceRepository.store(payload);
   }
 
-  findAll() {
-    return `This action returns all invoice`;
+  cancel(id: string, options: CancelParamOptions){
+    return this.invoiceRepository.cancelInvoice(id,options)
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} invoice`;
+  findAll(pagination: PaginationI) {
+    return this.invoiceRepository.listInvoices(pagination);
+  }
+
+  findOne(id: string) {
+    return this.invoiceRepository.findInvoiceById(id);
   }
 
   update(id: number, updateInvoiceDto: UpdateInvoiceDto) {

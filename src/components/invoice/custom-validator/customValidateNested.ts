@@ -6,11 +6,6 @@ import {
 } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 
-/**
- * @decorator
- * @description A custom decorator to validate a validation-schema within a validation schema upload N levels
- * @param schema The validation Class
- */
 export function CustomValidateNested(
     schema: new () => any,
     validationOptions?: ValidationOptions

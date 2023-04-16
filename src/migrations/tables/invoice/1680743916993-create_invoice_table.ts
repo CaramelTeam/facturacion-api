@@ -1,4 +1,4 @@
-import { CancellationStatus, InvoiceType, PaymentForm } from "../../../components/invoice/types/invoice.types"
+import { CancellationStatus, InvoiceType, PaymentForm, PaymentStatus } from "../../../components/invoice/types/invoice.types"
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
 export class createInvoiceTable1680743916993 implements MigrationInterface {
@@ -10,11 +10,8 @@ export class createInvoiceTable1680743916993 implements MigrationInterface {
             columns: [
                 {
                     name: 'id',
-                    type: 'int',
-                    isPrimary: true,
-                    isGenerated: true,
-                    generationStrategy: 'increment',
-                    unsigned: true
+                    type: 'varchar',
+                    isPrimary: true
                 },
                 {
                     name: 'customerId',
@@ -74,6 +71,12 @@ export class createInvoiceTable1680743916993 implements MigrationInterface {
                     enum: Object.values(PaymentForm)
                 },
                 {
+                    name: 'payment_status',
+                    type: 'enum',
+                    enum: Object.values(PaymentStatus),
+                    isNullable: false
+                },
+                {
                     name: 'expiration_date',
                     type: 'timestamp',
                     isNullable: true
@@ -85,8 +88,23 @@ export class createInvoiceTable1680743916993 implements MigrationInterface {
                     isNullable: true
                 },
                 {
+                    name: 'folio_number',
+                    type: 'int',
+                    unsigned: true,
+                },
+                {
+                    name: 'createdBy',
+                    type: 'int',
+                    unsigned: true
+                },
+                {
                     name: 'stamp', //informacion sobre el timbre fiscal
                     type: 'json'
+                },
+                {
+                    name: 'cancellation_uuid',
+                    type: 'varchar',
+                    length: '255',
                 },
                 {
                     name: 'createdAt',
@@ -97,11 +115,6 @@ export class createInvoiceTable1680743916993 implements MigrationInterface {
                     name: 'updatedAt',
                     type: 'timestamp',
                     default: 'now()'
-                },
-                {
-                    name: 'deletedAt',
-                    type: 'timestamp',
-                    isNullable: true
                 }
             ]
         })

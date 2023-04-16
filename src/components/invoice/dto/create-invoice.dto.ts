@@ -1,6 +1,12 @@
-import { IsArray, IsDateString, IsDefined, IsEmail, IsEnum, IsJSON, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsString, MaxDate, MaxLength, Validate, length } from "class-validator";
-import { CFDI, CancellationStatus, CustomerI, InvoiceType, PaymentForm, PaymentMethod } from "../types/invoice.types";
-import { Type } from "class-transformer";
+import {
+    IsArray,
+    IsEnum,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+} from "class-validator";
+import { CFDI, InvoiceType, PaymentForm, PaymentMethod } from "../types/invoice.types";
 import { CustomValidateNested } from "../custom-validator/customValidateNested";
 import { CustomerDto } from "./customer.dto";
 import { ItemDto } from "./items.dto";
@@ -13,7 +19,7 @@ export class CreateInvoiceDto {
     @CustomValidateNested(ItemDto)
     @IsArray()
     @IsNotEmpty()
-    items: ItemDto[];  
+    items: ItemDto[];
 
     @IsNumber()
     @IsNotEmpty()
@@ -42,5 +48,9 @@ export class CreateInvoiceDto {
     @IsString()
     @IsOptional()
     series?: string;
+
+    @IsNumber()
+    @IsOptional()
+    createdBy?: number;
 
 }

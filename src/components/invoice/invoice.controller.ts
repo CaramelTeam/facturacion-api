@@ -1,37 +1,53 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ValidationPipe,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { JwtAuthGuard } from '../auth/guards';
+import { CancelParamOptions } from './types/invoice.types';
+import { GetUser } from '../auth/decorators';
+import { GetUserI } from '../auth/interfaces/getUser.interface';
+import { PaginationI } from '../../helpers/interfaces/pagination.interface';
 
 @UseGuards(JwtAuthGuard)
 @Controller('invoice')
 export class InvoiceController {
-  constructor(private readonly invoiceService: InvoiceService) {}
+  constructor(private readonly invoiceService: InvoiceService) { }
 
   @Post()
-  create(@Body(new ValidationPipe({whitelist: true })) createInvoiceDto: CreateInvoiceDto) {
-    // console.log(createInvoiceDto);
+  create(@Body(new ValidationPipe({ whitelist: true })) createInvoiceDto: CreateInvoiceDto, @GetUser() user: GetUserI ) {
+    createInvoiceDto.createdBy = user.id;
     return this.invoiceService.create(createInvoiceDto);
   }
 
   @Get()
-  findAll() {
-    return this.invoiceService.findAll();
+  findAll(@Query() pagination: PaginationI) {
+    return this.invoiceService.findAll(pagination);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.invoiceService.findOne(+id);
+    return this.invoiceService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateInvoiceDto: UpdateInvoiceDto) {
     return this.invoiceService.update(+id, updateInvoiceDto);
+
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.invoiceService.remove(+id);
+  remove(@Param('id') id: string, @Query() options: CancelParamOptions) {    
+    return this.invoiceService.cancel(id, options)
   }
 }

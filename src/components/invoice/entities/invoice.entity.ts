@@ -1,35 +1,41 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { CancellationStatus, InvoiceType, PaymentForm } from "../types/invoice.types";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    PrimaryColumn,
+    UpdateDateColumn
+} from "typeorm";
+import { CancellationStatus, InvoiceType, PaymentForm, PaymentStatus } from "../types/invoice.types";
 
 @Entity({ name: 'invoice' })
 export class InvoiceE {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryColumn()
+    id: string;
 
     @Column()
     customerId: number;
 
-    @Column({default: false})
+    @Column({ default: false })
     livemode: boolean;
 
-    @Column({default: CancellationStatus.NONE})
+    @Column({ default: CancellationStatus.NONE })
     cancellation_status: CancellationStatus
 
     @Column()
     verification_url: string;
 
-    @Column({default: 'now()'})
+    @Column({ default: 'now()' })
     expidition_date: Date;
 
-    @Column({nullable: true, default: null})
+    @Column({ nullable: true, default: null })
     cancellation_receipt: string;
 
     @Column()
     type: InvoiceType;
 
     // @Column({type: 'double', precision: 10, scale: 2})
-    @Column({type: 'double'})
+    @Column({ type: 'double' })
     total: number;
 
     @Column()
@@ -41,22 +47,31 @@ export class InvoiceE {
     @Column()
     payment_form: PaymentForm;
 
-    @Column({nullable: true})
+    @Column({ default: PaymentStatus.PENDING })
+    payment_status: PaymentStatus
+
+    @Column({ nullable: true })
     expiration_date: Date;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     related_documents: string;
 
-    @Column({type: 'json'})
-    stamp: object;  
+    @Column()
+    folio_number: number;
+
+    @Column()
+    createdBy: number;
+
+    @Column({ type: 'json' })
+    stamp: object;
+
+    @Column()
+    cancellation_uuid: string;
 
     @CreateDateColumn()
     createdAt: Date;
 
     @UpdateDateColumn()
     updatedAt: Date;
-
-    @DeleteDateColumn()
-    deletedAt: Date;
 
 }
