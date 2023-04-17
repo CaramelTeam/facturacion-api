@@ -1,0 +1,13 @@
+name: Test
+
+on: 
+  push:
+    branches:
+      - ci-gh
+
+jobs:
+  hello_world: 
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Echo message
+        run: echo "Hola Jim"
