@@ -37,12 +37,3 @@ jobs:
       run: |
           docker build -t $REGISTRY/$REPOSITORY:test-$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-
-  deployment:
-    name: Deployment of the proyect
-    runs-on: self-hosted
-
-    steps:
-      - name: deploying
-        run: |
-            sudo docker pull $REGISTRY/$REPOSITORY:test-$IMAGE_TAG
