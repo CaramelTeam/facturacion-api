@@ -19,7 +19,7 @@ RUN npm run build
 FROM node:19-alpine3.15 as prod-deps
 WORKDIR /app
 COPY package.json ./
-RUN npm install --production
+RUN npm install --omit=dev
 
 FROM node:19-alpine3.15 as prod
 EXPOSE 5050
