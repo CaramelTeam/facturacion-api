@@ -35,5 +35,5 @@ jobs:
         REPOSITORY: factuapp
         IMAGE_TAG: ${{ github.sha }}
       run: |
-          STAGE="prod" APP_NAME="$REGISTRY" IMAGE_TAG="test-$IMAGE_TAG" docker compose -f .\docker-compose.prod.yml build
+          STAGE="prod" APP_NAME="$REGISTRY" IMAGE_TAG="test-$IMAGE_TAG" docker compose -f docker-compose.prod.yml build
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
