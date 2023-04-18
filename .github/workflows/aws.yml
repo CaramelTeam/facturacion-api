@@ -13,4 +13,4 @@ jobs:
 
     steps:
       - name: Creating a folder
-        run: mkdir ~/test
+        run: mkdir ~/testing
