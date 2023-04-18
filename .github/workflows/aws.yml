@@ -7,9 +7,17 @@ on:
 
 jobs:
 
+  testing:
+    name: testing ec2
+    runs-on: self-hosted
+
+    steps:
+      - name: Creating a folder
+        run: mkdir testingfoler
+
   build:
     name: Build image 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
 
@@ -37,6 +45,3 @@ jobs:
       run: |
           docker build -t $REGISTRY/$REPOSITORY:test-$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-
-    - name: Creating a Folder
-      run: mkdir foldertest
