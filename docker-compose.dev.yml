@@ -13,7 +13,7 @@ services:
       - /app/node_modules #volume anonimo de node_modules
     
     container_name: factu-app
-    image: jimloza/fact-api
+    image: ${APP_NAME}:${IMAGE_TAG}
     ports:
       - ${APP_PORT}:${APP_PORT}
 
