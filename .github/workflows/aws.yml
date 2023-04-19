@@ -40,10 +40,13 @@ jobs:
 
 
   deploying: 
+    needs: build
     name: Deploying to EC2
     runs-on: self-hosted
 
     steps:
       - name: deploying
         run: |
-            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            cd ~/Docker-qa
+            aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 311562728718.dkr.ecr.us-east-2.amazonaws.com
+            sudo TAG="$IMAGE_TAG" docker-compose.prod.yml 
