@@ -1,4 +1,4 @@
-name: Deploy to QA
+name: Building image and deploying tu EC2
 
 on:
   push:
@@ -37,3 +37,13 @@ jobs:
       run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+
+  deploying: 
+    name: Deploying to EC2
+    runs-on: self-hosted
+
+    steps:
+      - name: deploying
+        run: |
+            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
