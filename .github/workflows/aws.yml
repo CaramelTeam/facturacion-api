@@ -49,4 +49,4 @@ jobs:
         run: |
             cd ~/Docker-qa
             aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 311562728718.dkr.ecr.us-east-2.amazonaws.com
-            sudo TAG="$IMAGE_TAG" docker-compose.prod.yml 
+            sudo TAG="$IMAGE_TAG" docker compose docker-compose.prod.yml up -d
