@@ -4,7 +4,7 @@ services:
   app:
 
     container_name: factu-app
-    image: factu-api:${TAG}
+    image: ${NAME}:${TAG}
     ports:
       - ${APP_PORT}:${APP_PORT}
 

@@ -48,6 +48,7 @@ jobs:
       - name: deploying
         run: |
             cd ~/Docker-qa
+            echo "$IMAGE_TAG"
             mkdir testing
             aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 311562728718.dkr.ecr.us-east-2.amazonaws.com
-            sudo TAG="$IMAGE_TAG" docker compose -f docker-compose.yml up -d
+            sudo NAME="$REGISTRY/$REPOSITORY" TAG="$IMAGE_TAG" docker compose -f docker-compose.yml up -d
