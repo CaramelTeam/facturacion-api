@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile
     
     container_name: factu-qa-app
-    image: ${APP_NAME}:${IMAGE_TAG}
+    image: jimloza/factuapp-qa:${IMAGE_TAG}
     ports:
       - ${APP_PORT}:${APP_PORT}
 
