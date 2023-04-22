@@ -4,6 +4,7 @@ on:
       - ci-gh
 
 jobs:
+  
   build: 
     name: Build image and push to DockerHub
     runs-on: ubuntu-latest
@@ -39,5 +40,5 @@ jobs:
       env:
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        cd ~/Docker-qa
-        sudo IMAGE_TAG="qa-$IMAGE_TAG" docker compose -f docker-compose.prod.yml up -d
+          cd ~/Docker-qa
+          sudo IMAGE_TAG="qa-$IMAGE_TAG" docker compose -f docker-compose.prod.yml up -d
