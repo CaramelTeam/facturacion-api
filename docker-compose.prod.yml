@@ -9,9 +9,9 @@ services:
       dockerfile: Dockerfile
     
     container_name: factu-qa-app
-    image: jimloza/fact-api-qa
+    image: jimloza/factuapp-qa:${IMAGE_TAG}
     ports:
       - ${APP_PORT}:${APP_PORT}
 
-    env_file:
-      - ./.env
+    # env_file:
+    #   - ./.env
