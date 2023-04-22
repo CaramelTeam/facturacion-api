@@ -22,7 +22,7 @@ COPY package.json ./
 RUN npm install --omit=dev
 
 FROM node:19-alpine3.15 as prod
-EXPOSE 5050
+EXPOSE 3000
 WORKDIR /app
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
