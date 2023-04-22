@@ -18,7 +18,7 @@ jobs:
         
       run: |
         docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
-        STAGE="prod" APP_PORT=3000 docker compose -f docker-compose.prod.yml build 
+        STAGE="prod" IMAGE_TAG="qa-$IMAGE_TAG" APP_PORT=3000 docker compose -f docker-compose.prod.yml build 
         docker push $DOCKERHUB_USERNAME/factuapp-qa:qa-$IMAGE_TAG
 
   deploying: 
