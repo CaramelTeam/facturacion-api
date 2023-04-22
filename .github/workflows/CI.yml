@@ -20,3 +20,16 @@ jobs:
         docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
         STAGE="prod" APP_PORT=3000 docker compose -f docker-compose.prod.yml build 
         docker push $DOCKERHUB_USERNAME/factuapp-qa:$IMAGE_TAG
+
+  deploying: 
+    needs: ci
+    name: Deploying to EC2
+    runs-on: self-hosted
+
+    steps:
+    - name: deploying
+      env:
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        cd ~/Docker-qa
+        IMAGE_TAG=$IMAGE_TAG sudo docker compose -f docker-compose.prod.yml up -d
