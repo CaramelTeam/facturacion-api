@@ -4,8 +4,8 @@ on:
       - ci-gh
 
 jobs:
-  ci: 
-    name: ci
+  build: 
+    name: Build image and push to DockerHub
     runs-on: ubuntu-latest
 
     steps:
@@ -23,17 +23,21 @@ jobs:
 
 
   deploying: 
-    needs: ci
+    needs: build
     name: Deploying to EC2
     runs-on: self-hosted
 
     steps:
-      - name: deploying
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-        run: |
-          cd ~/Docker-qa
-          docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
-          sudo IMAGE_TAG="qa-$IMAGE_TAG" docker compose -f docker-compose.prod.yml up -d
+    - name: Login to dockerhub
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKERHUB_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+      run: |
+        docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
+
+    - name: deploying
+      env:
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        cd ~/Docker-qa
+        sudo IMAGE_TAG="qa-$IMAGE_TAG" docker compose -f docker-compose.prod.yml up -d
