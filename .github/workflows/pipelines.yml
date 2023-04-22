@@ -30,6 +30,9 @@ jobs:
     - name: deploying
       env:
         IMAGE_TAG: ${{ github.sha }}
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKERHUB_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
         cd ~/Docker-qa
+        docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
         sudo IMAGE_TAG="qa-$IMAGE_TAG" docker compose -f docker-compose.prod.yml up -d
