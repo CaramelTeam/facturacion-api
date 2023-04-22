@@ -13,5 +13,5 @@ services:
     ports:
       - ${APP_PORT}:${APP_PORT}
 
-    # env_file:
-    #   - ./.env
+    env_file:
+      - ./.env
