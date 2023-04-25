@@ -17,25 +17,19 @@ export class UserService {
     return this.userRepository.createUser(createUserDto);
   }
 
-  findAll(): Promise<UserE[]> {
-    return this.userRepository.findAll();
+  findOne(id: number) {
+    return this.userRepository.findUserById(id);
   }
 
-  findOne(id: number): Promise<UserE> {
-    return this.userRepository.findById(id);
-  }
-
-  findByEmail(email: string): Promise<UserE> {
-    console.log('Email service', email);
-    
-    return this.userRepository.findByEmail(email);
+  findByEmail(email: string) {
+    return this.userRepository.findUserByEmail(email);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return this.userRepository.updateById(id, updateUserDto);
+    return this.userRepository.updateUser(id, updateUserDto);
   }
 
   remove(id: number) {
-    return this.userRepository.deleteById(id);
+    return this.userRepository.deleteUser(id);
   }
 }

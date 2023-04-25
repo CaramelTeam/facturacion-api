@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+  app: 
+    build: 
+      context: .
+      target: ${STAGE}
+      dockerfile: Dockerfile
+    
+    container_name: factu-qa-app
+    image: jimloza/fact-api-qa
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+
+    env_file:
+      - ./.env
