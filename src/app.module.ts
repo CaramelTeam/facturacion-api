@@ -14,6 +14,7 @@ import { EmailModule } from './helpers/email/email.module';
 
 import { InvoiceModule } from './components/invoice/invoice.module';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { HealthModule } from './components/health/health.module';
 
 
 @Module({
@@ -39,7 +40,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     }),
     TestFuncsModule,
     EmailModule,
-    InvoiceModule
+    InvoiceModule,
+    HealthModule
   ],
   controllers: [AppController],
   providers: [AppService],
