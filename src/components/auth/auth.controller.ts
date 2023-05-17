@@ -16,6 +16,11 @@ export class AuthController {
     return this.authService.login(login);
   }
 
+  @Post('validate')
+  validateJwt(@Body('jwt') jwt: string) {
+    return this.authService.validateJwt(jwt);
+  }
+
   // @Get('private')
   // testingPrivateRoute(
   //   @GetUser() user,
