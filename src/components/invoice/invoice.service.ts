@@ -16,23 +16,20 @@ export class InvoiceService {
     return this.invoiceRepository.store(payload);
   }
 
-  cancel(id: string, options: CancelParamOptions){
-    return this.invoiceRepository.cancelInvoice(id,options)
+  cancel(id: string, options: CancelParamOptions) {
+    return this.invoiceRepository.cancelInvoice(id, options)
   }
 
   findAll(pagination: PaginationI) {
     return this.invoiceRepository.listInvoices(pagination);
   }
 
+  findByCurrenMonth(pagination: PaginationI) {
+    return this.invoiceRepository.listInvoiceByCurrentMonth(pagination);
+  }
+
   findOne(id: string) {
     return this.invoiceRepository.findInvoiceById(id);
   }
 
-  update(id: number, updateInvoiceDto: UpdateInvoiceDto) {
-    return `This action updates a #${id} invoice`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} invoice`;
-  }
 }

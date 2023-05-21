@@ -25,7 +25,7 @@ export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) { }
 
   @Post()
-  create(@Body(new ValidationPipe({ whitelist: true })) createInvoiceDto: CreateInvoiceDto, @GetUser() user: GetUserI ) {
+  create(@Body(new ValidationPipe({ whitelist: true })) createInvoiceDto: CreateInvoiceDto, @GetUser() user: GetUserI) {
     createInvoiceDto.createdBy = user.id;
     return this.invoiceService.create(createInvoiceDto);
   }
@@ -35,19 +35,18 @@ export class InvoiceController {
     return this.invoiceService.findAll(pagination);
   }
 
+  @Get('current-month')
+  findByCurrenMonth(@Query() pagination: PaginationI) {
+    return this.invoiceService.findByCurrenMonth(pagination);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.invoiceService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInvoiceDto: UpdateInvoiceDto) {
-    return this.invoiceService.update(+id, updateInvoiceDto);
-
-  }
-
   @Delete(':id')
-  remove(@Param('id') id: string, @Query() options: CancelParamOptions) {    
+  remove(@Param('id') id: string, @Query() options: CancelParamOptions) {
     return this.invoiceService.cancel(id, options)
   }
 }

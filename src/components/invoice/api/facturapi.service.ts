@@ -1,10 +1,12 @@
 import { InternalServerErrorException } from '@nestjs/common';
+import { writeFile } from 'fs';
 
 import axios from 'axios';
 
 import envsConfig from 'src/config/envs.config';
 import { CancelParamOptions, InvoiceI } from '../types/invoice.types';
 import { PaginationI } from '../../../helpers/interfaces/pagination.interface';
+import { uploadFile } from '../../../helpers/aws-s3/s3';
 
 
 const FACTURAPI_BASE_URL = envsConfig().app.FACTURAPI_URL;
@@ -88,6 +90,34 @@ export class FacturapiService {
                 message: 'No se pudo listar las facturas'
             })
 
+        }
+    }
+
+    async downloadInvoice(id: string): Promise<any> {
+        try {
+            const data = await axios({
+                url: `${FACTURAPI_BASE_URL}/invoices/${id}/zip`,
+                method: 'GET',
+                responseType: 'arraybuffer',
+                headers: {
+                    Authorization: `Bearer ${envsConfig().app.TEST_SECRET_KEY}`,
+                }
+            })
+
+            let pdfInfo = data.data;
+            const uploaded = await uploadFile(
+                {
+                    fileName: `${id}`,
+                    data: pdfInfo,
+                }
+            )
+            return { url: uploaded.location }
+        } catch (error) {
+            console.log(error.response);
+            throw new InternalServerErrorException({
+                status: +error.response.status,
+                message: 'No se pudo descargar la factura'
+            })
         }
     }
 

@@ -1,10 +1,19 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { FACTU_DATA_SOURCE } from "src/constants";
-import { DataSource, FindOptionsSelect } from 'typeorm';
+import { DataSource, FindOptionsSelect, Like } from 'typeorm';
 import { CreateInvoiceDto } from '../dto/create-invoice.dto';
 import { InvoiceE } from '../entities/invoice.entity';
 import { FacturapiService } from '../api/facturapi.service';
-import { CancelParamOptions, CancellationMotives } from '../types/invoice.types';
+import {
+    CancelParamOptions,
+    CancellationMotives,
+    CancellationStatus,
+    FilterInvoice,
+    InvoiceType,
+    PaymentForm,
+    PaymentMethod,
+    PaymentStatus
+} from '../types/invoice.types';
 import { NotFound } from '../exceptions/notFound.exception';
 import { PaginationI } from '../../../helpers/interfaces/pagination.interface';
 @Injectable()
@@ -40,36 +49,93 @@ export class InvoiceRepository {
         }
     }
 
-    async store(payload: CreateInvoiceDto): Promise<InvoiceE[]>{
+    async store(payload: CreateInvoiceDto): Promise<InvoiceE[]> {
+        //buold data to save in database
+        const dbItem = payload.items.map(item => {
+            let productId = item.product.id;
+            let quantity = item.quantity;
+            let price = item.product.price;
+            return { productId, quantity, price }
+        })
+        //deleting product id from payload
+        const items = payload.items.map(item => {
+            delete item.product.id
+            return item
+        })
+        //create invoice in facturapi
         const { customerId, createdBy, ...apiInvoice } = payload;
-        const data = await this.facturapi.createInvoice(apiInvoice);
+        const data = await this.facturapi.createInvoice({ ...apiInvoice, items });
+        const { url } = await this.facturapi.downloadInvoice(data.id)
+        //delete items from data
+        delete data.items;
+        //save invoice in database
         const invoice = this.invoiceRepository.create({
             customerId,
             createdBy,
             fiscal_folio: data.uuid,
+            items: dbItem,
+            url_files: url,
             ...data
         });
-        return this.invoiceRepository.save(invoice);
+        return await this.invoiceRepository.save(invoice);
     }
 
-    async listInvoices(pagination: PaginationI) {
-        //TODO: Pagination
-        return await this.facturapi.listInvoices(pagination);
-        // if (!data) {
-        //     throw new NotFound()
-        // }
+    async listInvoices(pagination: FilterInvoice) {
+        if (!pagination.page) pagination.page = 1;
+        if (!pagination.perPage) pagination.perPage = 10;
+        const offset = +pagination.page! === 1 ? 0 : (pagination.page! - 1) * pagination.perPage!
+        let fields: any = {}
+        if (pagination.search) {
+            fields = [
+                {
+                    fiscal_folio: pagination.search
+                },
+                {
+                    folio_number: pagination.search
+                }
+            ]
+        }
+        if (pagination.customerId) {
+            fields['customerId'] = pagination.customerId
+        }
+        // return await this.facturapi.listInvoices(pagination);
+        const data = await this.invoiceRepository.findAndCount({
+            select: this.selectOptions(true),
+            relations: {
+                items: {
+                    product: true
+                }
+            },
+            where: fields,
+            skip: offset,
+            take: pagination.perPage!
+        })
+
+        if (data[1] === 0) {
+            throw new NotFound()
+        }
+        return data;
     }
 
 
     async cancelInvoice(id: string, options: CancelParamOptions) {
-        //TODO: Hacer cambios en la base de datos
-        const invoice = await this.invoiceRepository.findOne({where: {id}})
+        const invoice = await this.invoiceRepository.findOne({ where: { id } })
         if (!invoice) {
             throw new NotFound()
         }
-        const data = await this.facturapi.cancelInvoice(id, options);
-        return data;
-        
+        try {
+            const data = await this.facturapi.cancelInvoice(id, options);
+            if (data.cancellation_status === CancellationStatus.ACCEPTED) {
+                invoice.cancellation_status = data.cancellation_status;
+                invoice.cancellation_receipt = data.cancellation_receipt;
+                invoice.cancellation_uuid = data.cancellation_uuid;
+                await this.invoiceRepository.update(id, invoice);
+            }
+            return data;
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+        }
+
     }
 
     async findInvoiceById(id: string) {
@@ -78,10 +144,42 @@ export class InvoiceRepository {
             throw new NotFound()
         }
         const options: any = {
-            where: {id},
-            select: this.selectOptions(true)
+            where: { id },
+            select: this.selectOptions(true),
+            relations: {
+                items: {
+                    product: true
+                }
+            }
         }
         return await this.invoiceRepository.findOne(options)
+    }
+
+    async listInvoiceByCurrentMonth(pagination: PaginationI) {
+        if (!pagination.page) pagination.page = 1;
+        if (!pagination.perPage) pagination.perPage = 10;
+        const offset = +pagination.page! === 1 ? 0 : (pagination.page! - 1) * pagination.perPage!
+
+
+        //getting current month and year
+        const currentMonth = new Date().getMonth() + 1;
+        const currentYear = new Date().getFullYear();
+
+        //getting invoices from database
+        const data = await this.invoiceRepository.createQueryBuilder('invoice')
+            .select(['invoice.id', 'invoice.fiscal_folio', 'invoice.expidition_date', 'invoice.expiration_date', 'invoice.total', 'invoice.payment_status', 'invoice.cancellation_status', 'invoice.cancellation_receipt', 'invoice.cancellation_uuid', 'invoice.verification_url', 'invoice.createdAt', 'invoice.updatedAt'])
+            .where(`MONTH(invoice.createdAt) = ${currentMonth}`)
+            .andWhere(`YEAR(invoice.createdAt) = ${currentYear}`)
+            .innerJoinAndSelect('invoice.items', 'items')
+            .innerJoinAndSelect('items.product', 'product')
+            .skip(offset)
+            .take(pagination.perPage)
+            .getManyAndCount()
+
+        if (data[0].length === 0) {
+            throw new NotFound()
+        }
+        return data;
     }
 
 }

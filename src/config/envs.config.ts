@@ -19,6 +19,12 @@ export default registerAs('env.config', () => {
             NODEMAILER_NAME: process.env.NODEMAILER_NAME,
             NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
             NODEMAILER_PORT: process.env.NODEMAILER_PORT,
+        },
+        AWS: {
+            AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+            AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+            AWS_REGION: process.env.AWS_REGION,
+            AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
         }
     }
 })
