@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { ProductInvoiceE } from '../../../components/invoice/entities/productInvoice.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from 'typeorm';
 
 @Entity({ name: 'products' })
 export class ProductE {
@@ -14,7 +15,7 @@ export class ProductE {
     @Column({ type: 'decimal' })
     price: number;
 
-    @Column({ type: 'int',  nullable: false })
+    @Column({ type: 'int', nullable: false })
     productKey: number;
 
     @Column({ length: 6 })
@@ -31,5 +32,8 @@ export class ProductE {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @OneToMany(() => ProductInvoiceE, productInvoice => productInvoice.product)
+    productInvoice: ProductInvoiceE[];
 
 }

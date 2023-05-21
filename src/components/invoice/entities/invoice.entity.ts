@@ -2,10 +2,12 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    OneToMany,
     PrimaryColumn,
     UpdateDateColumn
 } from "typeorm";
 import { CancellationStatus, InvoiceType, PaymentForm, PaymentStatus } from "../types/invoice.types";
+import { ProductInvoiceE } from "./productInvoice.entity";
 
 @Entity({ name: 'invoice' })
 export class InvoiceE {
@@ -73,5 +75,14 @@ export class InvoiceE {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @Column({ nullable: true })
+    url_files: string;
+
+    @OneToMany(() => ProductInvoiceE, productInvoice => productInvoice.invoice, { cascade: true })
+    items: ProductInvoiceE[];
+
+    // @OneToMany(() => InvoiceE, invoice => invoice.id)
+    // invoice: ;
 
 }

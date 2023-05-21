@@ -1,4 +1,4 @@
-export const ENV_PATH ='.env'
+export const ENV_PATH = '.env'
 export const DATABASE_CONNECTION = 'TYPEORM'
 
 export const FACTU_CONNECTION = 'FACTU_DB'
@@ -7,3 +7,20 @@ export const FACTU_DATA_SOURCE = 'FACTU_DATA_SOURCE'
 
 //decorator
 export const PUBLIC_ROUTE = 'IS_PUBLIC_ROUTE'
+
+
+//MONTHS
+export const MONTHS = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio ',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+];

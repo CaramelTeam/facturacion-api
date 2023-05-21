@@ -3,4 +3,5 @@ export interface PaginationI {
     limit: number;
     perPage: number;
     total: number;
+    search?: string;
 }

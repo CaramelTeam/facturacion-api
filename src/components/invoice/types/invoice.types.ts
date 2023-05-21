@@ -1,3 +1,4 @@
+import { PaginationI } from '../../../helpers/interfaces/pagination.interface';
 export interface InvoiceI {
     customer: CustomerI;
     items: ItemI[];
@@ -38,7 +39,7 @@ export interface TaxesI {
     rate: number,
     type: TaxesTypes,
     factor: TaxesFactor
-} 
+}
 
 export enum PaymentForm {
     EFECTIVO = '01',
@@ -127,7 +128,7 @@ export enum TaxesFactor {
 
 
 export enum CancellationMotives {
-    ERRORES_CON_RELAION= '01',
+    ERRORES_CON_RELAION = '01',
     ERRORES_SIN_RELACION = '02',
     NO_SE_LLEVO_ACABO_LA_OPERACION = '03',
     OPERACION_NOMINATIVA_FACTURA_GLOBAL = '05'
@@ -135,10 +136,14 @@ export enum CancellationMotives {
 
 export interface CancelParamOptions {
     motive: CancellationMotives,
-    substitution?: string 
-} 
+    substitution?: string
+}
 
 export enum PaymentStatus {
     PENDING = 'pending',
     PAID = 'paid'
+}
+
+export interface FilterInvoice extends PaginationI {
+    customerId?: number;
 }

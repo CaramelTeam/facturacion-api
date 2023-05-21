@@ -17,6 +17,11 @@ class TaxesDto {
 }
 
 class ProductDto {
+
+    @IsNumber()
+    @IsOptional()
+    id?: number;
+
     @IsString()
     @IsNotEmpty()
     description: string;
@@ -40,6 +45,7 @@ class ProductDto {
 }
 
 export class ItemDto {
+
     @IsNumber()
     quantity: number;
 
