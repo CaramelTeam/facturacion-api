@@ -27,7 +27,7 @@ export class InvoiceE {
     @Column()
     verification_url: string;
 
-    @Column({ default: 'now()' })
+    @Column({ transformer: { to: (value: Date) => value, from: (value: Date) => (!value ? null : value.toLocaleString('en-US')) } })
     expidition_date: Date;
 
     @Column({ nullable: true, default: null })
