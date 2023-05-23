@@ -46,6 +46,15 @@ export class InvoiceRepository {
             verification_url: pag,
             createdAt: !!one,
             updatedAt: !!one,
+            items: {
+                product: {
+                    id: pag,
+                    name: pag,
+                    price: pag,
+                    unitKey: pag,
+                    description: pag,
+                }
+            }
         }
     }
 
@@ -167,7 +176,6 @@ export class InvoiceRepository {
 
         //getting invoices from database
         const data = await this.invoiceRepository.createQueryBuilder('invoice')
-            .select(['invoice.id', 'invoice.fiscal_folio', 'invoice.expidition_date', 'invoice.expiration_date', 'invoice.total', 'invoice.payment_status', 'invoice.cancellation_status', 'invoice.cancellation_receipt', 'invoice.cancellation_uuid', 'invoice.verification_url', 'invoice.createdAt', 'invoice.updatedAt'])
             .where(`MONTH(invoice.createdAt) = ${currentMonth}`)
             .andWhere(`YEAR(invoice.createdAt) = ${currentYear}`)
             .innerJoinAndSelect('invoice.items', 'items')
