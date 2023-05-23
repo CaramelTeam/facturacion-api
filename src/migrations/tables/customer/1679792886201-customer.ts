@@ -10,11 +10,9 @@ export class customer1679792886201 implements MigrationInterface {
             columns: [
                 {
                     name: "id",
-                    type: "int",
+                    type: "varchar",
                     isPrimary: true,
-                    isGenerated: true,
-                    generationStrategy: "increment",
-                    unsigned: true
+                    length: "255"
                 },
                 {
                     name: "legal_name",
@@ -35,15 +33,84 @@ export class customer1679792886201 implements MigrationInterface {
     
                 },
                 {
-                    name: "tax_system",
+                    name: "zip",
                     type: "varchar",
-                    length: "3",
+                    length: "6",
+    
                 },
                 {
-                    name: "tax_system",
+                    name: "street",
                     type: "varchar",
-                    length: "3",
+                    length: "255",
+                    isNullable: true
                 },
+                {
+                    name: "exterior",
+                    type: "varchar",
+                    length: "255",
+                    isNullable: true
+                },
+                {
+                    name: "interior",
+                    type: "varchar",
+                    length: "255",
+                    isNullable: true
+                },
+                {
+                    name: "neighborhood",
+                    type: "varchar",
+                    length: "255",
+                    isNullable: true
+                },
+                {
+                    name: "city",
+                    type: "varchar",
+                    length: "255",
+                    isNullable: true
+                },
+                {
+                    name: "municipality",
+                    type: "varchar",
+                    length: "255",
+                    isNullable: true
+                },
+                {
+                    name: "state",
+                    type: "varchar",
+                    length: "255",
+                    isNullable: true
+                },
+                {
+                    name: "country",
+                    type: "varchar",
+                    length: "255",
+                    isNullable: true
+                },
+                {
+                    name: "email",
+                    type: "varchar",
+                    length: "255",
+                },
+                {
+                    name: "phone",
+                    type: "varchar",
+                    length: "255",
+                },
+                {
+                    name: "createdAt",
+                    type: "timestamp",
+                    default: "CURRENT_TIMESTAMP"
+                },
+                {
+                    name: "updatedAt",
+                    type: "timestamp",
+                    default: "CURRENT_TIMESTAMP"
+                },
+                {
+                    name: "deletedAt",
+                    type: "timestamp",
+                    isNullable: true
+                }
             ]
 
         })
@@ -59,3 +126,5 @@ export class customer1679792886201 implements MigrationInterface {
     }
 
 }
+
+

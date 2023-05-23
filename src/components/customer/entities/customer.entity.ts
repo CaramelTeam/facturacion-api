@@ -1,19 +1,22 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity,  PrimaryColumn,  PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 @Entity({name: 'customers'})
 
-export class Customer {
+export class CustomerE {
  
-    @PrimaryGeneratedColumn()
-    id:number;
+    @PrimaryColumn()
+    id:string; //
 
     @Column({length:255})
-    legal_namel:string;
+    legal_name:string;//
 
     @Column({length:255})
     tax_id:string;//rfc
 
     @Column({length:3})
-    tax_system:string;
+    tax_system:string; //
+
+    @Column({length:6})
+    zip:string; 
 
     @Column({length:255})
     street:string;
