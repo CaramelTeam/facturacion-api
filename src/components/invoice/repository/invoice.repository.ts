@@ -187,7 +187,13 @@ export class InvoiceRepository {
         if (data[0].length === 0) {
             throw new NotFound()
         }
-        return data;
+
+        const rows = data[0].map(item => {
+            const { items, ...invoice } = item;
+            return { ...invoice, items: items.map(item => ({ ...item, product: item.product.name, productKey: item.product.productKey })) }
+        })
+
+        return { rows, count: data[1] };
     }
 
 }
