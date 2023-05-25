@@ -24,7 +24,7 @@ jobs:
   deploying:
     needs: build
     name: Deploying to EC2
-    runs-on: [self-hosted, factu]
+    runs-on: self-hosted
 
     steps:
       - name: Login to dockerhub
