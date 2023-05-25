@@ -1,13 +1,13 @@
 name: Test
 
-on: 
+on:
   push:
     branches:
       - ci-gh
 
 jobs:
-  hello_world: 
+  hello_world:
     runs-on: ubuntu-latest
     steps:
       - name: Echo message
-        run: echo "Hola Jim"
+        run: echo "Hola Jim desde GitHub Actions"
