@@ -54,6 +54,12 @@ export class InvoiceRepository {
                     unitKey: pag,
                     description: pag,
                 }
+            },
+            owner: {
+                id: true,
+                legal_name: pag,
+                tax_id: pag,
+                email: pag,
             }
         }
     }
@@ -79,12 +85,12 @@ export class InvoiceRepository {
         delete data.items;
         //save invoice in database
         const invoice = this.invoiceRepository.create({
+            ...data,
             customerId,
             createdBy,
             fiscal_folio: data.uuid,
             items: dbItem,
             url_files: url,
-            ...data
         });
         return await this.invoiceRepository.save(invoice);
     }
@@ -113,7 +119,8 @@ export class InvoiceRepository {
             relations: {
                 items: {
                     product: true
-                }
+                },
+                owner: true
             },
             where: fields,
             skip: offset,
@@ -158,7 +165,8 @@ export class InvoiceRepository {
             relations: {
                 items: {
                     product: true
-                }
+                },
+                owner: true
             }
         }
         return await this.invoiceRepository.findOne(options)
@@ -180,6 +188,8 @@ export class InvoiceRepository {
             .andWhere(`YEAR(invoice.createdAt) = ${currentYear}`)
             .innerJoinAndSelect('invoice.items', 'items')
             .innerJoinAndSelect('items.product', 'product')
+            // .innerJoinAndSelect('invoice.owner', 'owner')
+            .leftJoinAndSelect('invoice.owner', 'owner')
             .skip(offset)
             .take(pagination.perPage)
             .getManyAndCount()

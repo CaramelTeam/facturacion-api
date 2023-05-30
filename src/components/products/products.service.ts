@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProducRepository } from './repository/product.repository';
+import { PaginationI } from '../../helpers/interfaces/pagination.interface';
 
 @Injectable()
 export class ProductsService {
@@ -16,8 +17,8 @@ export class ProductsService {
     return this.productRepository.storeProduct(createProductDto);
   }
 
-  findAll() {
-    return this.productRepository.getProduct();
+  findAll(pagination: PaginationI) {
+    return this.productRepository.getProduct(pagination);
   }
 
   findOne(id: number) {
@@ -26,10 +27,10 @@ export class ProductsService {
 
 
   update(id: number, updateProductDto: UpdateProductDto) {
-    return this.productRepository.updateById(id,updateProductDto);
+    return this.productRepository.updateById(id, updateProductDto);
   }
 
   remove(id: number) {
-   return this.productRepository.deleteById(id);
+    return this.productRepository.deleteById(id);
   }
 }
