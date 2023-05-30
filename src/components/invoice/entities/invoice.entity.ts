@@ -2,12 +2,15 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
+    ManyToOne,
     OneToMany,
     PrimaryColumn,
     UpdateDateColumn
 } from "typeorm";
 import { CancellationStatus, InvoiceType, PaymentForm, PaymentStatus } from "../types/invoice.types";
 import { ProductInvoiceE } from "./productInvoice.entity";
+import { CustomerE } from "src/components/customer/entities/customer.entity";
 
 @Entity({ name: 'invoice' })
 export class InvoiceE {
@@ -15,8 +18,8 @@ export class InvoiceE {
     @PrimaryColumn()
     id: string;
 
-    @Column()
-    customerId: number;
+    @Column({ length: 255 })
+    customerId: string;
 
     @Column({ default: false })
     livemode: boolean;
@@ -82,7 +85,8 @@ export class InvoiceE {
     @OneToMany(() => ProductInvoiceE, productInvoice => productInvoice.invoice, { cascade: true })
     items: ProductInvoiceE[];
 
-    // @OneToMany(() => InvoiceE, invoice => invoice.id)
-    // invoice: ;
+    @ManyToOne(() => CustomerE, customer => customer.id)
+    @JoinColumn({ name: 'customerId' })
+    owner: CustomerE;
 
 }

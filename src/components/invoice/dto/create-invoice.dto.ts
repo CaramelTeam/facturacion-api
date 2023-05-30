@@ -21,9 +21,9 @@ export class CreateInvoiceDto {
     @IsNotEmpty()
     items: ItemDto[];
 
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    customerId: number;
+    customerId: string;
 
     @IsEnum(CFDI)
     @IsNotEmpty()

@@ -5,6 +5,7 @@ import { ProductE } from '../entities/product.entity';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { ProductNotFoundException } from '../exceptions/notFound.exception';
 import { UpdateProductDto } from '../dto/update-product.dto';
+import { PaginationI } from '../../../helpers/interfaces/pagination.interface';
 
 @Injectable()
 export class ProducRepository {
@@ -15,8 +16,17 @@ export class ProducRepository {
 
     private readonly productRepository = this.dataSource.getRepository(ProductE)
 
-    async getProduct(): Promise<ProductE[]> {
-        return await this.productRepository.find();
+    async getProduct(pagination: PaginationI) {
+        if (!pagination.page) pagination.page = 1;
+        if (!pagination.perPage) pagination.perPage = 10;
+        const offset = +pagination.page! === 1 ? 0 : (pagination.page! - 1) * pagination.perPage!
+        const [rows, count] = await this.productRepository.findAndCount({
+            select: {},
+            skip: offset,
+            take: pagination.perPage!
+        });
+
+        return { rows, count };
     }
 
 
@@ -34,7 +44,7 @@ export class ProducRepository {
     }
 
     async updateById(id: number, updateproduct: UpdateProductDto): Promise<UpdateResult> {
-        const product = await this.productRepository.findOne({where: {id}});
+        const product = await this.productRepository.findOne({ where: { id } });
         if (!product) {
             throw new NotFoundException('Product');
         }
@@ -42,7 +52,7 @@ export class ProducRepository {
     }
 
     async deleteById(id: number): Promise<UpdateResult> {
-        const product = await this.productRepository.findOne({where: {id}});
+        const product = await this.productRepository.findOne({ where: { id } });
         if (!product) {
             throw new NotFoundException('Product');
         }
