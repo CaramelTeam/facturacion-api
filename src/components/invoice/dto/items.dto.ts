@@ -1,4 +1,4 @@
-import { IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsBooleanString, IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { CustomValidateNested } from "../custom-validator/customValidateNested";
 import { TaxesFactor, TaxesTypes } from "../types/invoice.types";
 
@@ -14,6 +14,10 @@ class TaxesDto {
     @IsEnum(TaxesFactor)
     @IsNotEmpty()
     factor: TaxesFactor;
+
+    @IsBoolean()
+    @IsOptional()
+    withholding: boolean;
 }
 
 class ProductDto {
@@ -41,6 +45,9 @@ class ProductDto {
 
     @IsString()
     unit_key: string;
+
+    @IsBoolean()
+    tax_included: boolean;
 
 }
 
