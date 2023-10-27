@@ -60,21 +60,6 @@ export class createTableUser1674980524499 implements MigrationInterface {
                     name: "deletedAt",
                     type: "timestamp",
                     isNullable: true
-                },
-                {
-                    name: "createdAt",
-                    type: "timestamp",
-                    default: "CURRENT_TIMESTAMP"
-                },
-                {
-                    name: "updatedAt",
-                    type: "timestamp",
-                    default: "CURRENT_TIMESTAMP"
-                },
-                {
-                    name: "deletedAt",
-                    type: "timestamp",
-                    isNullable: true
                 }
             ]
         })
