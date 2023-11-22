@@ -30,5 +30,6 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
+          echo pwd
           STAGE="prod" APP_PORT=3001 docker compose -f ./docker-compose.prod.yml build
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
