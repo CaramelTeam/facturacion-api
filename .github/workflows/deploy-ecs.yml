@@ -19,19 +19,20 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
 
-      - name: Build, and push image to Amazon ECR
-        uses: actions/checkout@v2
+      - name: Build, tag, and push docker image to Amazon ECR Public
         id: build-image
+        uses: actions/checkout@v2
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: factu-api
+          # ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          # ECR_REPOSITORY: factu-api
+          REPOSITORY: factu-api
           IMAGE_TAG: ${{ github.sha }}
           run: |
-            # Build a docker container and
-            # push it to ECR so that it can
-            # be deployed to ECS.
             STAGE="prod" IMAGE_TAG=$IMAGE_TAG APP_PORT=3001 docker-compose -f docker-compose.prod.yml build
-            docker push 311562728718.dkr.ecr.us-east-2.amazonaws.com/factu-api:$IMAGE_TAG
+            docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
             # echo >> REG: $ECR_REGISTRY
             # echo  image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
