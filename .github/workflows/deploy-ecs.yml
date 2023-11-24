@@ -22,11 +22,10 @@ jobs:
 
       - name: Build, tag, and push docker image to Amazon ECR Public
         id: build-image
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         env:
-          # ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          # ECR_REPOSITORY: factu-api
+          REGISTRY_ALIAS: factu-api-alias
           REPOSITORY: factu-api
           IMAGE_TAG: ${{ github.sha }}
           run: |
