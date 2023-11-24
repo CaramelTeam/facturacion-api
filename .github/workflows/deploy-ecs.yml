@@ -21,13 +21,13 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - uses: actions/checkout@v2
-      - name: Build the stack
+        id: build-image
+      - name: Build and push to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: factu-api
           IMAGE_TAG: ${{ github.sha }}
         run: |
           STAGE="prod" IMAGE_TAG=$IMAGE_TAG ECR_REGISTRY=$ECR_REGISTRY APP_PORT=3001 docker-compose -f docker-compose.prod.yml build
+          echo  "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo >> REG: $ECR_REGISTRY
-          echo  image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
