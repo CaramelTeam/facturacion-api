@@ -22,15 +22,14 @@ jobs:
 
       - name: Build, tag, and push docker image to Amazon ECR Public
         id: build-image
-        uses: actions/checkout@v3
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: factu-api
           IMAGE_TAG: ${{ github.sha }}
-          run: |
-            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-            # STAGE="prod" IMAGE_TAG=$IMAGE_TAG APP_PORT=3001 docker-compose -f docker-compose.prod.yml build
-            # docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
-            # echo >> REG: $ECR_REGISTRY
-            # echo  image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          # STAGE="prod" IMAGE_TAG=$IMAGE_TAG APP_PORT=3001 docker-compose -f docker-compose.prod.yml build
+          # docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+          # echo >> REG: $ECR_REGISTRY
+          # echo  image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
