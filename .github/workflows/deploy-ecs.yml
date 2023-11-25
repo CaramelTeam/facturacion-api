@@ -11,6 +11,7 @@ jobs:
       image: ${{ steps.build-and-push.outputs.image }}
 
     steps:
+      - uses: actions/checkout@v2
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -22,8 +23,8 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - uses: actions/checkout@v2
-        id: build-image
+      # - uses: actions/checkout@v2
+      #   id: build-image
       - name: Build and push to Amazon ECR
         id: build-and-push
         env:
