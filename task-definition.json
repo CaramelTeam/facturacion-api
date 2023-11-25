@@ -1,0 +1,17 @@
+{
+    "family": "",
+    "containerDefinitions": [
+        {
+            "name": "my-test-container",
+            "image": "",
+            "memory": 0,
+            "cpu": 0
+        }
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "networkMode": "awsvpc",
+    "memory": "512",
+    "cpu": "256"
+}
