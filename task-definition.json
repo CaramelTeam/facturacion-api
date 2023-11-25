@@ -1,5 +1,5 @@
 {
-    "family": "webapp",
+    "family": "web-api",
     "containerDefinitions": [
         {
             "name": "my-test-container",
