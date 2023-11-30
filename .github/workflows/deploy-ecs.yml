@@ -53,6 +53,15 @@ jobs:
         id: download-task-def
         run: aws ecs describe-task-definition --task-definition em-api --query taskDefinition > task-definition.json
 
+      # - name: Upload task definition as an artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: task-artifact
+      #     path: task-definition.json
+
+      - name: cat task definition
+        run: cat task-definition.json
+
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
