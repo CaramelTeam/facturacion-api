@@ -50,13 +50,14 @@ jobs:
           aws-region: us-east-2
 
       - name: Download task definition
+        id: download-task-def
         run: aws ecs describe-task-definition --task-definition em-api --query taskDefinition > task-definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition.json
+          task-definition: ${{ steps.download-task-def.outputs.task-definition }}
           container-name: my-test-container
           image: ${{ needs.build.outputs.image }}
 
