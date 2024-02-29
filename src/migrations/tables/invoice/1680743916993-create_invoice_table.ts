@@ -105,6 +105,7 @@ export class createInvoiceTable1680743916993 implements MigrationInterface {
                     name: 'cancellation_uuid',
                     type: 'varchar',
                     length: '255',
+                    isNullable: true
                 },
                 {
                     name: 'createdAt',
@@ -125,7 +126,7 @@ export class createInvoiceTable1680743916993 implements MigrationInterface {
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         const table = await queryRunner.getTable(this.realName);
-        if (table) await queryRunner.dropTable(this.realName);  
+        if (table) await queryRunner.dropTable(this.realName);
     }
 
 }
