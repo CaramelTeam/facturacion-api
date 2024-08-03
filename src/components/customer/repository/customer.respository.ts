@@ -8,18 +8,35 @@ import { UpdateCustomerDto } from '../dto/update-customer.dto';
 import { NotFoundException } from '../../../helpers/exceptions/notFound.exception'
 import { FacturaCustomersApiServices } from '../api/facturapi.customers.services';
 import { CustomerI } from '../../invoice/types/invoice.types';
+import { PaginationI } from 'src/helpers/interfaces/pagination.interface';
 @Injectable()
 export default class CustomerRepository {
     constructor(
         @Inject(FACTU_DATA_SOURCE)
         private readonly dataSource: DataSource,
-       private readonly api :FacturaCustomersApiServices
+        private readonly api: FacturaCustomersApiServices
     ) { }
 
     private customerRepository = this.dataSource.getRepository(CustomerE)
 
-    async findAll(): Promise<CustomerE[]> {
-        return await this.customerRepository.find();
+    async findAll(pagination: PaginationI) {
+        if (!pagination.page) pagination.page = 1;
+        if (!pagination.perPage) pagination.perPage = 10;
+        const customers = await this.customerRepository.findAndCount({
+            skip: (pagination.page - 1) * pagination.perPage,
+            take: pagination.perPage
+        })
+
+        console.log('Customer: ', customers);
+
+        return {
+            data: customers[0],
+            metadata: {
+                page: +pagination.page,
+                total: customers[1]
+            }
+        }
+
     }
 
     async findById(id: string): Promise<CustomerE> {
@@ -27,7 +44,7 @@ export default class CustomerRepository {
     }
 
     async createCustomer(createCustomer: CreateCustomerDto) {
-        const newCustomer : CustomerI = {
+        const newCustomer: CustomerI = {
             legal_name: createCustomer.legal_name,
             tax_id: createCustomer.tax_id,
             tax_system: createCustomer.tax_system,
@@ -44,13 +61,13 @@ export default class CustomerRepository {
                     ]
                 })
 
-         const RFCValidation = await this.api.ValidationRFC(createCustomer.tax_id);
-         if (!RFCValidation)  throw new BadRequestException('Favor de validar su rfc posible efos')
-         if (validation ) throw new (registered);
+        const RFCValidation = await this.api.ValidationRFC(createCustomer.tax_id);
+        if (!RFCValidation) throw new BadRequestException('Favor de validar su rfc posible efos')
+        if (validation) throw new (registered);
         const res = await this.api.createCustomer(newCustomer);
         const newUser = this.customerRepository.create({
-           id : res.id ,
-           ...createCustomer
+            id: res.id,
+            ...createCustomer
         });
 
 
@@ -59,7 +76,7 @@ export default class CustomerRepository {
 
     async updateById(id: string, updateCustomer: UpdateCustomerDto): Promise<UpdateResult> {
         const customer = await this.customerRepository.findOne({ where: { id } });
-        const updateCustomerApi = await this.api.updateCustomer(id,updateCustomer);
+        const updateCustomerApi = await this.api.updateCustomer(id, updateCustomer);
         if (!customer) {
             throw new NotFoundException('Customer')
         }
@@ -69,7 +86,7 @@ export default class CustomerRepository {
     async deleteById(id: string): Promise<UpdateResult> {
         const deleteApi = await this.api.deleteCustomerById(id);
         const customer = await this.customerRepository.findOne({ where: { id } })
-        if (!customer) {    
+        if (!customer) {
             throw new NotFoundException('Customer');
         }
         return await this.customerRepository.softDelete(id);

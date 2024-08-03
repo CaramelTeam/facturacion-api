@@ -15,10 +15,24 @@ export class CreateCustomerDto {
     @IsString()
     tax_system: string;
 
+
+    @IsNotEmpty()
+    @MaxLength(3, { message: 'The preferred_cfdi  cannot be longer than 3 characters.' })
+    @IsString()
+    preferred_cfdi: string;
+
     @IsNotEmpty()
     @MaxLength(6, { message: 'The zip  cannot be longer than 6 characters.' })
     @IsString()
     zip: string;
+
+    @IsNotEmpty()
+    @IsEmail()
+    email: string;
+
+    @IsOptional()
+    @IsPhoneNumber('MX')
+    phone: string;
 
     @IsOptional()
     @IsString({ message: 'street cannot be number' })
@@ -51,15 +65,5 @@ export class CreateCustomerDto {
     @IsOptional()
     @IsString({ message: 'country cannot be number' })
     country: string;
-
-    @IsNotEmpty()
-    @IsEmail()
-    email: string;
-
-    @IsNotEmpty()
-    @IsPhoneNumber('MX')
-    phone: string;
-
-
 
 }

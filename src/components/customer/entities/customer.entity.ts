@@ -49,6 +49,9 @@ export class CustomerE {
     @Column({ length: 10 })
     phone: string;
 
+    @Column({ length: 3 })
+    preferred_cfdi: string;
+
     @CreateDateColumn()
     createdAt: Date;
 

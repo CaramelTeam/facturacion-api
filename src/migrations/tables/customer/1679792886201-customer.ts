@@ -5,8 +5,8 @@ export class customer1679792886201 implements MigrationInterface {
     private readonly realName = "customers"
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        const tableSchema = new Table ({
-            name : this.realName,
+        const tableSchema = new Table({
+            name: this.realName,
             columns: [
                 {
                     name: "id",
@@ -30,13 +30,13 @@ export class customer1679792886201 implements MigrationInterface {
                     name: "tax_system",
                     type: "varchar",
                     length: "3",
-    
+
                 },
                 {
                     name: "zip",
                     type: "varchar",
                     length: "6",
-    
+
                 },
                 {
                     name: "street",
@@ -95,6 +95,7 @@ export class customer1679792886201 implements MigrationInterface {
                     name: "phone",
                     type: "varchar",
                     length: "255",
+                    isNullable: true
                 },
                 {
                     name: "createdAt",
