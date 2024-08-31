@@ -18,6 +18,11 @@ export class ProductsController {
     return this.productsService.findAll(pagination);
   }
 
+  @Get('catalog/units')
+  getCatalogUnits(@Query() pagination: PaginationI) {
+    return this.productsService.getCatalogUnits(pagination);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);

@@ -6,12 +6,14 @@ import { CreateProductDto } from '../dto/create-product.dto';
 import { ProductNotFoundException } from '../exceptions/notFound.exception';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { PaginationI } from '../../../helpers/interfaces/pagination.interface';
+import { ProductApiServices } from '../api/facturapi.product.services';
 
 @Injectable()
 export class ProducRepository {
     constructor(
         @Inject(FACTU_DATA_SOURCE)
-        private readonly dataSource: DataSource
+        private readonly dataSource: DataSource,
+        private readonly api: ProductApiServices
     ) { }
 
     private readonly productRepository = this.dataSource.getRepository(ProductE)
@@ -19,14 +21,31 @@ export class ProducRepository {
     async getProduct(pagination: PaginationI) {
         if (!pagination.page) pagination.page = 1;
         if (!pagination.perPage) pagination.perPage = 10;
-        const offset = +pagination.page! === 1 ? 0 : (pagination.page! - 1) * pagination.perPage!
-        const [rows, count] = await this.productRepository.findAndCount({
-            select: {},
-            skip: offset,
-            take: pagination.perPage!
+        const products = await this.productRepository.findAndCount({
+            skip: (pagination.page - 1) * pagination.perPage,
+            take: pagination.perPage
         });
 
-        return { rows, count };
+        return {
+            data: products[0],
+            metadata: {
+                page: +pagination.page,
+                total: products[1]
+            }
+        }
+    }
+
+    async getCatalogUnits(pagination: PaginationI) {
+        if (!pagination.page) pagination.page = 1;
+        if (!pagination.perPage) pagination.perPage = 10;
+        const products = await this.api.getCatalogUnits(pagination);
+        return {
+            data: products.data,
+            metadata: {
+                page: +pagination.page,
+                total: products.total
+            }
+        }
     }
 
 

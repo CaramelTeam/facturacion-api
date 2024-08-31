@@ -17,12 +17,17 @@ export class ProductsService {
     return this.productRepository.storeProduct(createProductDto);
   }
 
+
   findAll(pagination: PaginationI) {
     return this.productRepository.getProduct(pagination);
   }
 
   findOne(id: number) {
     return this.productRepository.getById(id);
+  }
+
+  getCatalogUnits(pagination: PaginationI) {
+    return this.productRepository.getCatalogUnits(pagination);
   }
 
 
